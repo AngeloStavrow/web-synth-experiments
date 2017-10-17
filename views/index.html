@@ -5,15 +5,186 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Add sound to your web app</title>
+    <title>🎶 Doo be do be doooooo 🎶</title>
     <link rel="stylesheet" href="main.css">
   </head>
   <body>
     <div class="container">
       <h1>Synthesizer!</h1>
     </div>
+    <form>
+      <p><strong>Oscillators</strong></p>
+      <p>Oscillator 1 type <select id="osc1_type">
+        <option value="sine">Sine</option>
+        <option value="square">Square</option>
+        <option value="sawtooth">Sawtooth</option>
+        <option value="triangle">Triangle</option>
+      </select></p>
+      <p>Oscillator 2 type <select id="osc2_type">
+        <option value="sine">Sine</option>
+        <option value="square">Square</option>
+        <option value="sawtooth">Sawtooth</option>
+        <option value="triangle">Triangle</option>
+      </select></p>
+      <p><strong>Effects</strong></p>
+      <p>Chorus effect <input type="checkbox" id="chorus_enabled" /></p>
+      
+      <p><strong>Filter 1</strong></p>
+      <p>Filter type <select id="filter_type_1">
+        <option value="lowpass">Lowpass</option>
+        <option value="highpass">Highpass</option>
+        <option value="bandpass">Bandpass</option>
+        <option value="lowshelf">Lowshelf</option>
+        <option value="highshelf">Highshelf</option>
+        <option value="peaking">Peaking</option>
+        <option value="notch">Notch</option>
+        <option value="allpass">Allpass</option>
+      </select></p>
+      <p>Frequency <input type="text" id="frequency_1" /> Hz</p>
+      <p>Q factor <input type="text" id="q_factor_1" /></p>
+      <p>Gain <input type="text" id="gain_1" /></p>
+
+      <p><strong>Filter 2</strong></p>
+      <p>Filter type <select id="filter_type_2">
+        <option value="lowpass">Lowpass</option>
+        <option value="highpass">Highpass</option>
+        <option value="bandpass">Bandpass</option>
+        <option value="lowshelf">Lowshelf</option>
+        <option value="highshelf">Highshelf</option>
+        <option value="peaking">Peaking</option>
+        <option value="notch">Notch</option>
+        <option value="allpass">Allpass</option>
+      </select></p>
+      <p>Frequency <input type="text" id="frequency_2" /> Hz</p>
+      <p>Q factor <input type="text" id="q_factor_2" /></p>
+      <p>Gain <input type="text" id="gain_2" /></p>
+      
+      <p><strong>Filter 3</strong></p>
+      <p>Filter type <select id="filter_type_3">
+        <option value="lowpass">Lowpass</option>
+        <option value="highpass">Highpass</option>
+        <option value="bandpass">Bandpass</option>
+        <option value="lowshelf">Lowshelf</option>
+        <option value="highshelf">Highshelf</option>
+        <option value="peaking">Peaking</option>
+        <option value="notch">Notch</option>
+        <option value="allpass">Allpass</option>
+      </select></p>
+      <p>Frequency <input type="text" id="frequency_3" /> Hz</p>
+      <p>Q factor <input type="text" id="q_factor_3" /></p>
+      <p>Gain <input type="text" id="gain_3" /></p>
+      
+      <p><input type="button" name="load" value="Load" onclick="loadPreset()" /> <input type="button" name="save" value="Save" onclick="savePreset()"/></p>
+    </form>
+    <p>&nbsp;</p>
     <div id="keyboard"></div>
     <script src="/qwerty-hancock.min.js"></script>
+    <script src="/utils.js"></script>
     <script src="/synth.js"></script>
+    <script src="/filter.js"></script>
+    <script src="/preset.js"></script>
+    <script>
+      // Load the preset from local storage.
+      function loadPreset() {
+        console.log('Loading preset from local storage')
+        
+        console.log(JSON.parse(localStorage.getItem('preset')));
+        
+        var savedPreset = localStorage.getItem('preset');
+        
+        function loadFilter(i) { 
+          var savedFilter = localStorage.getItem('filter' + i);
+          
+          if (savedFilter) {
+            console.log('Saved filter' + i + ' found, loading into memory');
+            filter = Filter(JSON.parse(savedFilter));
+            console.log(filter);
+            
+            return filter;
+          }
+        }
+        
+        // TODO: DRY this up with .map() instead!
+        var savedFilter1 = loadFilter("1");
+        var savedFilter2 = loadFilter("2");
+        var savedFilter3 = loadFilter("3");
+
+        if (savedPreset) {
+          console.log('Saved preset found, loading into memory');
+          preset = Preset(JSON.parse(savedPreset));
+          console.log(preset);
+        }
+
+        document.getElementById('osc1_type').value = preset.oscillator1.type;
+        document.getElementById('osc2_type').value = preset.oscillator2.type;
+        if (preset.effect === 'chorus') {
+          document.getElementById('chorus_enabled').checked = true;
+        }
+        else {
+          document.getElementById('chorus_enabled').checked = false;
+        }
+        
+        // TODO: DRY this up with .map() instead!
+        document.getElementById('filter_type_1').value = filter1.type;
+        document.getElementById('frequency_1').value = filter1.frequency;
+        document.getElementById('q_factor_1').value = filter1.Q;
+        document.getElementById('gain_1').value = filter1.gain;
+        
+        document.getElementById('filter_type_2').value = filter2.type;
+        document.getElementById('frequency_2').value = filter2.frequency;
+        document.getElementById('q_factor_2').value = filter2.Q;
+        document.getElementById('gain_2').value = filter2.gain;
+        
+        document.getElementById('filter_type_3').value = filter3.type;
+        document.getElementById('frequency_3').value = filter3.frequency;
+        document.getElementById('q_factor_3').value = filter3.Q;
+        document.getElementById('gain_3').value = filter3.gain;
+      }
+      
+      // Save the preset to local storage.
+      function savePreset() {
+        console.log('Saving preset to local storage')
+        
+        preset.oscillator1.type = document.getElementById('osc1_type').value;
+        preset.oscillator2.type = document.getElementById('osc2_type').value;
+        
+        filter1.type = document.getElementById('filter_type_1').value;
+        filter1.frequency = document.getElementById('frequency_1').value;
+        filter1.Q = document.getElementById('q_factor_1').value;
+        filter1.gain = document.getElementById('gain_1').value;
+        
+        filter2.type = document.getElementById('filter_type_2').value;
+        filter2.frequency = document.getElementById('frequency_2').value;
+        filter2.Q = document.getElementById('q_factor_2').value;
+        filter2.gain = document.getElementById('gain_2').value;
+        
+        filter3.type = document.getElementById('filter_type_3').value;
+        filter3.frequency = document.getElementById('frequency_3').value;
+        filter3.Q = document.getElementById('q_factor_3').value;
+        filter3.gain = document.getElementById('gain_3').value;
+                
+        if (document.getElementById('chorus_enabled').checked) {
+          preset.effect = 'chorus';
+        }
+        else {
+          preset.effect = 'none';
+        }
+        
+        preset.setEffect();
+        
+        localStorage.setItem('preset', JSON.stringify(preset));
+        localStorage.setItem('filter1', JSON.stringify(filter1));
+        localStorage.setItem('filter2', JSON.stringify(filter2));
+        localStorage.setItem('filter3', JSON.stringify(filter3));
+        
+        console.log(preset);
+        console.log(filter1);
+        console.log(filter2);
+        console.log(filter3);
+      }
+      
+      // Load the preset when we load the page.
+      window.onload = loadPreset();
+    </script>
   </body>
 </html>
