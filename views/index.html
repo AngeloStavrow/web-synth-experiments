@@ -86,17 +86,12 @@
     <script>
       // Load the preset from local storage.
       function loadPreset() {
-        console.log('Loading preset from local storage')
-        
-        console.log(JSON.parse(localStorage.getItem('preset')));
-        
         var savedPreset = localStorage.getItem('preset');
         
         function loadFilter(i) { 
           var savedFilter = localStorage.getItem('filter' + i);
           
           if (savedFilter) {
-            console.log('Saved filter' + i + ' found, loading into memory');
             filter = Filter(JSON.parse(savedFilter));
             console.log(filter);
             
@@ -104,15 +99,11 @@
           }
         }
         
-        // TODO: DRY this up with .map() instead!
-        var savedFilter1 = loadFilter("1");
-        var savedFilter2 = loadFilter("2");
-        var savedFilter3 = loadFilter("3");
+        var savedFilters = ["1", "2", "3"].map(loadFilter);
 
         if (savedPreset) {
           console.log('Saved preset found, loading into memory');
           preset = Preset(JSON.parse(savedPreset));
-          console.log(preset);
         }
 
         document.getElementById('osc1_type').value = preset.oscillator1.type;
@@ -124,44 +115,45 @@
           document.getElementById('chorus_enabled').checked = false;
         }
         
-        // TODO: DRY this up with .map() instead!
-        document.getElementById('filter_type_1').value = filter1.type;
-        document.getElementById('frequency_1').value = filter1.frequency;
-        document.getElementById('q_factor_1').value = filter1.Q;
-        document.getElementById('gain_1').value = filter1.gain;
+        function initializeFilterControls(i) {          
+          document.getElementById('filter_type_' + i).value = savedFilters[i - 1].type;
+          document.getElementById('frequency_' + i).value = savedFilters[i - 1].frequency;
+          document.getElementById('q_factor_' + i).value = savedFilters[i - 1].Q;
+          document.getElementById('gain_' + i).value = savedFilters[i - 1].gain;
+        }
         
-        document.getElementById('filter_type_2').value = filter2.type;
-        document.getElementById('frequency_2').value = filter2.frequency;
-        document.getElementById('q_factor_2').value = filter2.Q;
-        document.getElementById('gain_2').value = filter2.gain;
+        [1, 2, 3].map(initializeFilterControls);
         
-        document.getElementById('filter_type_3').value = filter3.type;
-        document.getElementById('frequency_3').value = filter3.frequency;
-        document.getElementById('q_factor_3').value = filter3.Q;
-        document.getElementById('gain_3').value = filter3.gain;
+        function initializeFilter(filter, i) {
+          filter.type = savedFilters[i].type;
+          filter.frequency = parseFloat(savedFilters[i].frequency);
+          filter.Q = parseFloat(savedFilters[i].Q);
+          filter.gain = parseFloat(savedFilters[i].gain);
+        }
+        
+        initializeFilter(filter1, 0);
+        initializeFilter(filter2, 1);
+        initializeFilter(filter3, 2);
       }
       
       // Save the preset to local storage.
       function savePreset() {
-        console.log('Saving preset to local storage')
         
         preset.oscillator1.type = document.getElementById('osc1_type').value;
         preset.oscillator2.type = document.getElementById('osc2_type').value;
         
-        filter1.type = document.getElementById('filter_type_1').value;
-        filter1.frequency = document.getElementById('frequency_1').value;
-        filter1.Q = document.getElementById('q_factor_1').value;
-        filter1.gain = document.getElementById('gain_1').value;
+        function storeFilter(filter, i) {
+          filter.type = document.getElementById('filter_type_' + i).value;
+          filter.frequency = document.getElementById('frequency_' + i).value;
+          filter.Q = document.getElementById('q_factor_' + i).value;
+          filter.gain = document.getElementById('gain_' + i).value;
+          
+          localStorage.setItem('filter' + i, JSON.stringify(filter));
+        }
         
-        filter2.type = document.getElementById('filter_type_2').value;
-        filter2.frequency = document.getElementById('frequency_2').value;
-        filter2.Q = document.getElementById('q_factor_2').value;
-        filter2.gain = document.getElementById('gain_2').value;
-        
-        filter3.type = document.getElementById('filter_type_3').value;
-        filter3.frequency = document.getElementById('frequency_3').value;
-        filter3.Q = document.getElementById('q_factor_3').value;
-        filter3.gain = document.getElementById('gain_3').value;
+        storeFilter(filter1, 1);
+        storeFilter(filter2, 2);
+        storeFilter(filter3, 3);
                 
         if (document.getElementById('chorus_enabled').checked) {
           preset.effect = 'chorus';
@@ -173,14 +165,6 @@
         preset.setEffect();
         
         localStorage.setItem('preset', JSON.stringify(preset));
-        localStorage.setItem('filter1', JSON.stringify(filter1));
-        localStorage.setItem('filter2', JSON.stringify(filter2));
-        localStorage.setItem('filter3', JSON.stringify(filter3));
-        
-        console.log(preset);
-        console.log(filter1);
-        console.log(filter2);
-        console.log(filter3);
       }
       
       // Load the preset when we load the page.
