@@ -1,8 +1,46 @@
 body {
-    font-family: sans-serif;   
+  background-color: #0FACE0;
+  color: white;
+  font-family: sans-serif;   
+}
+
+.container {
+  margin: auto;
+  padding: 10px;
+  width: 1500px;
 }
  
-.container {
-    margin: auto;
-    width: 800px;
+.synth-container {
+  background-color: #111;
+  border-radius: 5px;
+  margin: auto;
+  padding: 10px;
+  width: 1500px;
+}
+
+.control-strip {
+  background-color: #222;
+  border-radius: 5px;
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  width: 1500px;
+}
+
+.control-element {
+  background-color: #333;
+  border-radius: 5px;
+  float: inherit;
+  margin: 10px;
+  padding: 0px 15px;
+  width: 325px;
+}
+
+h2 {
+  color: red;
+  font-family: monospace;
+  font-size: 2.5em;
+  margin: 0px;
+  padding: 0px 15px;
+  text-align: right;
 }
