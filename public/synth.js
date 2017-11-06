@@ -18,7 +18,7 @@ var osc1, osc2;
 var pressedKeys = {};
 
 masterVolume.gain.value = 0.3;
-masterVolume.connect(context.destination);
+// masterVolume.connect(context.destination);
 
 keyboard.keyDown = function (note, frequency) {
   // If we aren't already counting this keypress, start doing so.
