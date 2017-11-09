@@ -4,13 +4,13 @@ body {
   font-family: sans-serif;   
 }
 
-.container {
+div.container {
   margin: auto;
   padding: 10px;
   width: 1500px;
 }
  
-.synth-container {
+div.synth-container {
   background-color: #111;
   border-radius: 5px;
   margin: auto;
@@ -18,7 +18,7 @@ body {
   width: 1500px;
 }
 
-.control-strip {
+div.control-strip {
   background-color: #222;
   border-radius: 5px;
   float: left;
@@ -27,16 +27,7 @@ body {
   width: 1500px;
 }
 
-.control-element {
-  background-color: #333;
-  border-radius: 5px;
-  float: inherit;
-  margin: 10px;
-  padding: 0px 15px;
-  width: 325px;
-}
-
-h2 {
+div.control-strip > h2 {
   color: red;
   font-family: monospace;
   font-size: 2.5em;
@@ -44,3 +35,39 @@ h2 {
   padding: 0px 15px;
   text-align: right;
 }
+
+div.control-section {
+  background-color: #333;
+  border-radius: 5px;
+  color: #CCC;
+  float: inherit;
+  height: 185px;
+  margin: 10px;
+  padding: 0px 15px;
+  width: 325px;
+}
+
+div.control-section > h2 {
+  color: white;
+  font-size: 1em;
+}
+
+div.oscillator-element > label {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0;
+}
+
+div.effects-element > label {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0;
+}
+
+div.control-section.filter > label {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0;
+}
+
+

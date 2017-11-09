@@ -11,7 +11,7 @@
   <body>
     <div class="container">
       <h1>
-        Experiments in web-audio 🎹&rarr;🎛️&rarr;🔊
+        Experiments in <a href="https://webaudio.github.io/web-audio-api/">web-audio</a> 🎹&rarr;🎛️&rarr;🔊
       </h1>
     </div>
     
@@ -25,35 +25,35 @@
             Angeloog X200
           </h2>
 
-          <div class="control-element">
-            <p><strong>Oscillators</strong></p>
+          <div class="control-section">
+            <h2>Oscillators</h2>
             <div class="oscillator-element" id="osc1">
-              <p>Oscillator 1 type <select id="osc1_type">
+              <label>Oscillator 1 type <select id="osc1_type">
                 <option value="sine">Sine</option>
                 <option value="square">Square</option>
                 <option value="sawtooth">Sawtooth</option>
                 <option value="triangle">Triangle</option>
-              </select></p>
+              </select></label>
             </div>
 
             <div class="oscillator-element" id="osc2">
-              <p>Oscillator 2 type <select id="osc2_type">
+              <label>Oscillator 2 type <select id="osc2_type">
                 <option value="sine">Sine</option>
                 <option value="square">Square</option>
                 <option value="sawtooth">Sawtooth</option>
                 <option value="triangle">Triangle</option>
-              </select></p>
+              </select></label>
             </div>
 
-            <div class="oscillator-element" id="effects">
-              <p><strong>Effects</strong></p>
-              <p>Chorus effect <input type="checkbox" id="chorus_enabled" /></p>
+            <h2>Effects</h2>
+            <div class="effects-element" id="effects">
+              <label>Chorus effect <input type="checkbox" id="chorus_enabled" /></label>
             </div>
           </div>
 
-          <div class="control-element" id="filter1">
-            <p><strong>Filter 1</strong></p>
-            <p>Filter type <select id="filter_type_1">
+          <div class="control-section filter" id="filter1">
+            <h2>Filter 1</h2>
+            <label>Filter type <select id="filter_type_1">
               <option value="lowpass">Lowpass</option>
               <option value="highpass">Highpass</option>
               <option value="bandpass">Bandpass</option>
@@ -62,15 +62,15 @@
               <option value="peaking">Peaking</option>
               <option value="notch">Notch</option>
               <option value="allpass">Allpass</option>
-            </select></p>
-            <p>Frequency <input type="text" id="frequency_1" /> Hz</p>
-            <p>Q factor <input type="text" id="q_factor_1" /></p>
-            <p>Gain <input type="text" id="gain_1" /></p>
+            </select></label>
+            <label>Frequency (Hz)<input type="text" id="frequency_1" /></label>
+            <label>Q factor <input type="text" id="q_factor_1" /></label>
+            <label>Gain (dB)<input type="text" id="gain_1" /></label>
           </div>
 
-          <div class="control-element" id="filter2">
-            <p><strong>Filter 2</strong></p>
-            <p>Filter type <select id="filter_type_2">
+          <div class="control-section filter" id="filter2">
+            <h2>Filter 2</h2>
+            <label>Filter type <select id="filter_type_2">
               <option value="lowpass">Lowpass</option>
               <option value="highpass">Highpass</option>
               <option value="bandpass">Bandpass</option>
@@ -79,15 +79,15 @@
               <option value="peaking">Peaking</option>
               <option value="notch">Notch</option>
               <option value="allpass">Allpass</option>
-            </select></p>
-            <p>Frequency <input type="text" id="frequency_2" /> Hz</p>
-            <p>Q factor <input type="text" id="q_factor_2" /></p>
-            <p>Gain <input type="text" id="gain_2" /></p>
+            </select></label>
+            <label>Frequency (Hz)<input type="text" id="frequency_2" /></label>
+            <label>Q factor <input type="text" id="q_factor_2" /></label>
+            <label>Gain (dB)<input type="text" id="gain_2" /></label>
           </div>
 
-          <div class="control-element" id="filter3">
-            <p><strong>Filter 3</strong></p>
-            <p>Filter type <select id="filter_type_3">
+          <div class="control-section filter" id="filter3">
+            <h2>Filter 3</h2>
+            <label>Filter type <select id="filter_type_3">
               <option value="lowpass">Lowpass</option>
               <option value="highpass">Highpass</option>
               <option value="bandpass">Bandpass</option>
@@ -96,10 +96,10 @@
               <option value="peaking">Peaking</option>
               <option value="notch">Notch</option>
               <option value="allpass">Allpass</option>
-            </select></p>
-            <p>Frequency <input type="text" id="frequency_3" /> Hz</p>
-            <p>Q factor <input type="text" id="q_factor_3" /></p>
-            <p>Gain <input type="text" id="gain_3" /></p>
+            </select></label>
+            <label>Frequency (Hz)<input type="text" id="frequency_3" /></label>
+            <label>Q factor <input type="text" id="q_factor_3" /></label>
+            <label>Gain (dB)<input type="text" id="gain_3" /></label>
           </div>
 
         </div>
