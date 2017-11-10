@@ -11,14 +11,18 @@ var keyboard = new QwertyHancock({
   octaves: 6
 });
 
-var context = new AudioContext(),
-    masterVolume = context.createGain();
+var context;
+
+// We need this to make it work with Safari, because #courage.
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+context = new AudioContext();
+
+var masterVolume = context.createGain();
 
 var osc1, osc2;
 var pressedKeys = {};
 
 masterVolume.gain.value = 0.3;
-// masterVolume.connect(context.destination);
 
 keyboard.keyDown = function (note, frequency) {
   // If we aren't already counting this keypress, start doing so.
@@ -43,21 +47,18 @@ keyboard.keyDown = function (note, frequency) {
   biquadFilter1.frequency.value = filter1.frequency;
   biquadFilter1.Q.value = filter1.Q;
   biquadFilter1.gain.value = filter1.gain;
-  console.log(biquadFilter1);
   
   var biquadFilter2 = context.createBiquadFilter();
   biquadFilter2.type = filter2.type;
   biquadFilter2.frequency.value = filter2.frequency;
   biquadFilter2.Q.value = filter2.Q;
   biquadFilter2.gain.value = filter2.gain;
-  console.log(biquadFilter2);
 
   var biquadFilter3 = context.createBiquadFilter();
   biquadFilter3.type = filter3.type;
   biquadFilter3.frequency.value = filter3.frequency;
   biquadFilter3.Q.value = filter3.Q;
   biquadFilter3.gain.value = filter3.gain;
-  console.log(biquadFilter3);
  
   osc1.connect(biquadFilter1);
   osc2.connect(biquadFilter1);
@@ -69,6 +70,7 @@ keyboard.keyDown = function (note, frequency) {
   
   osc1.start(context.currentTime);
   osc2.start(context.currentTime);
+  console.log(pressedKeys);
 }
 
 keyboard.keyUp = function (note, frequency) {
@@ -86,4 +88,5 @@ keyboard.keyUp = function (note, frequency) {
   else {
     delete pressedKeys[note];
   }
+  console.log(pressedKeys);
 }
