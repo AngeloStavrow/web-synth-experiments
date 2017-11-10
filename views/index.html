@@ -149,14 +149,14 @@
           document.getElementById('chorus_enabled').checked = false;
         }
         
-        function initializeFilterControls(i) {          
-          document.getElementById('filter_type_' + i).value = savedFilters[i - 1].type;
-          document.getElementById('frequency_' + i).value = savedFilters[i - 1].frequency;
-          document.getElementById('q_factor_' + i).value = savedFilters[i - 1].Q;
-          document.getElementById('gain_' + i).value = savedFilters[i - 1].gain;
+        function initializeFilterControls(i) {
+          var filters = [filter1, filter2, filter3];
+          
+          document.getElementById('filter_type_' + i).value = filters[i - 1].type;
+          document.getElementById('frequency_' + i).value = filters[i - 1].frequency;
+          document.getElementById('q_factor_' + i).value = filters[i - 1].Q;
+          document.getElementById('gain_' + i).value = filters[i - 1].gain;
         }
-        
-        [1, 2, 3].map(initializeFilterControls);
         
         function initializeFilter(filter, i) {
           filter.type = savedFilters[i].type;
@@ -165,9 +165,14 @@
           filter.gain = parseFloat(savedFilters[i].gain);
         }
         
-        initializeFilter(filter1, 0);
-        initializeFilter(filter2, 1);
-        initializeFilter(filter3, 2);
+        // We need all filters to be defined for now.
+        if (savedFilters[0] && savedFilters[1] && savedFilters[2]) {
+          initializeFilter(filter1, 0);
+          initializeFilter(filter2, 1);
+          initializeFilter(filter3, 2);
+        }
+        
+        [1, 2, 3].map(initializeFilterControls);
       }
       
       // Save the preset to local storage.
