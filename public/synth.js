@@ -19,20 +19,36 @@ context = new AudioContext();
 
 var masterVolume = context.createGain();
 
-var osc1, osc2;
 var pressedKeys = {};
+
+function Note() {
+  // TODO: Initialize all the filters and connections here
+  
+  return {
+    osc1: null,
+    osc2: null,
+    count: 0
+  }
+}
 
 masterVolume.gain.value = 0.3;
 
-keyboard.keyDown = function (note, frequency) {
+keyboard.keyDown = function (key, frequency) {
+  var osc1, osc2, note;
+  
   // If we aren't already counting this keypress, start doing so.
-  if (!pressedKeys[note]) { pressedKeys[note] = 0; }
+  if (pressedKeys[key]) {
+    note = pressedKeys[key]
+    osc1 = note.osc1;
+    osc2 = note.osc2;
+  } else {
+    note = pressedKeys[key] = Note();
+    osc1 = note.osc1 = context.createOscillator();
+    osc2 = note.osc2 = context.createOscillator();
+  }
   
   // Increment the counter for this particular note.
-  pressedKeys[note]++;
-  
-  osc1 = context.createOscillator();
-  osc2 = context.createOscillator();
+  note.count++;
   
   osc1.frequency.value = frequency;
   osc1.type = preset.oscillator1.type;
@@ -67,26 +83,33 @@ keyboard.keyDown = function (note, frequency) {
   biquadFilter3.connect(masterVolume);
   
   masterVolume.connect(context.destination);
-  
+
+  // TODO: Only call start on 1 == count
   osc1.start(context.currentTime);
   osc2.start(context.currentTime);
   console.log(pressedKeys);
 }
 
-keyboard.keyUp = function (note, frequency) {
+keyboard.keyUp = function (key, frequency) {
+  var note = pressedKeys[key];
+  var osc1 = note.osc1;
+  var osc2 = note.osc2;
+  
   osc1.stop(context.currentTime);
-  osc2.stop(context.currentTime);
+  osc2.stop(context.currentTime);  
   
   osc1.disconnect();
   osc2.disconnect();
   
   // If we're tracking more than one keypress, decrement the counter.
-  if (pressedKeys[note] > 1) {
-    pressedKeys[note]--;
+  if (note.count > 1) {
+    note.count--;
+
   }
   // Otherwise, baleet it so we're not balloonering the memories.
   else {
-    delete pressedKeys[note];
+    // TODO: move the stop/disconnect in here…?
+    delete pressedKeys[key];
   }
   console.log(pressedKeys);
 }
